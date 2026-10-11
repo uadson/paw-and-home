@@ -6,7 +6,7 @@ import tailwindcss from '@tailwindcss/vite';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://uadson.github.io',
-  base: process.env.BASE_PATH ?? '/amazon-affiliate-niche-site',
+  base: process.env.BASE_PATH ?? '/paw-and-home',
   output: 'static',
   integrations: [mdx(), sitemap()],
   vite: {

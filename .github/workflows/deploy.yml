@@ -36,7 +36,7 @@ jobs:
       - name: Build static site with Astro
         run: npm run build
         env:
-          BASE_PATH: /amazon-affiliate-niche-site
+          BASE_PATH: /paw-and-home
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

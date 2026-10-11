@@ -12,10 +12,10 @@ describe('seo utils (utilitários de SEO e Schema Markup)', () => {
       const article = {
         title: 'Best Cat Water Fountains of 2026',
         description: 'Discover the top whisper-quiet stainless steel pet fountains.',
-        url: 'https://uadson.github.io/amazon-affiliate-niche-site/articles/best-cat-water-fountains',
+        url: 'https://uadson.github.io/paw-and-home/articles/best-cat-water-fountains',
         publishDate: new Date('2026-03-01'),
         author: 'Vet Care Editorial Team',
-        image: 'https://uadson.github.io/amazon-affiliate-niche-site/images/cat-fountain.jpg',
+        image: 'https://uadson.github.io/paw-and-home/images/cat-fountain.jpg',
       };
 
       const schema = buildArticleSchema(article);
@@ -55,9 +55,9 @@ describe('seo utils (utilitários de SEO e Schema Markup)', () => {
   describe('buildBreadcrumbSchema', () => {
     it('deve gerar Schema.org BreadcrumbList com a hierarquia correta', () => {
       const items = [
-        { name: 'Home', url: 'https://uadson.github.io/amazon-affiliate-niche-site/' },
-        { name: 'Pet Care', url: 'https://uadson.github.io/amazon-affiliate-niche-site/category/pet-care' },
-        { name: 'Best Cat Water Fountains', url: 'https://uadson.github.io/amazon-affiliate-niche-site/articles/best-cat-water-fountains' },
+        { name: 'Home', url: 'https://uadson.github.io/paw-and-home/' },
+        { name: 'Pet Care', url: 'https://uadson.github.io/paw-and-home/category/pet-care' },
+        { name: 'Best Cat Water Fountains', url: 'https://uadson.github.io/paw-and-home/articles/best-cat-water-fountains' },
       ];
 
       const schema = buildBreadcrumbSchema(items);

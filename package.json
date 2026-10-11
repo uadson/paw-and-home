@@ -1,5 +1,5 @@
 {
-  "name": "amazon-affiliate-niche-site",
+  "name": "paw-and-home",
   "version": "1.0.0",
   "description": "High-performance, SEO-optimized Amazon Affiliate Niche Site for the US market",
   "type": "module",
@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/uadson/amazon-affiliate-niche-site.git"
+    "url": "git+https://github.com/uadson/paw-and-home.git"
   },
   "keywords": [
     "astro",
