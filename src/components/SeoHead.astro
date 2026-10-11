@@ -33,6 +33,10 @@ const resolvedOgImage = new URL(ogImage, Astro.site || Astro.url.origin).href;
 <link rel="canonical" href={canonicalUrl} />
 <meta name="robots" content="index, follow" />
 
+<!-- Verificações de Domínio (Pinterest & Google Search Console) -->
+<meta name="p:domain_verify" content="bd7448ceb8b2438d085e41ded85647c2" />
+<meta name="google-site-verification" content="google8908cf41d2a48033" />
+
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content={ogType} />
 <meta property="og:url" content={canonicalUrl} />
