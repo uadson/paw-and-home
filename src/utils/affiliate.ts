@@ -7,7 +7,7 @@
 
 export const DEFAULT_AMAZON_TAG = 
   (typeof process !== 'undefined' && process.env?.PUBLIC_AMAZON_AFFILIATE_TAG) ||
-  'nichehub-20';
+  'pawandhome-20';
 
 const ASIN_REGEX = /(?:dp\/|gp\/product\/|asin\/|(?:\/|^))([A-Z0-9]{10})(?:[/?&]|$)/i;
 
