@@ -10,7 +10,8 @@
     "preview": "astro preview",
     "astro": "astro",
     "test": "vitest run",
-    "new:article": "node scripts/new-article.mjs"
+    "new:article": "node scripts/new-article.mjs",
+    "publish:next": "node scripts/publish-next.mjs"
   },
   "repository": {
     "type": "git",

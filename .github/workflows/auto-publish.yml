@@ -1,0 +1,68 @@
+name: Auto Publish Next Article
+
+on:
+  schedule:
+    # Executa toda terça-feira e sexta-feira às 14:00 UTC (10:00 EST / 11:00 BRT)
+    - cron: '0 14 * * 2,5'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  publish-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Publish next article from queue
+        id: publish
+        run: |
+          node scripts/publish-next.mjs
+
+      - name: Commit and push new article
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add src/content/articles/ data/editorial-queue.json
+          if git diff --staged --quiet; then
+            echo "Nenhum novo artigo gerado."
+          else
+            git commit -m "chore(auto-publish): publica novo artigo da fila editorial"
+            git push origin main
+          fi
+
+      - name: Run unit tests
+        run: npm test
+
+      - name: Build static site with Astro
+        run: npm run build
+        env:
+          BASE_PATH: /paw-and-home
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
