@@ -4,6 +4,7 @@ import {
   extractAsin,
   getAffiliateRel,
   getFtcDisclosure,
+  buildPrimeTrialUrl,
   DEFAULT_AMAZON_TAG,
 } from '../src/utils/affiliate';
 
@@ -68,6 +69,13 @@ describe('affiliate utils (utilitários de afiliado)', () => {
       const disclosure = getFtcDisclosure();
       expect(disclosure).toContain('Amazon Associate');
       expect(disclosure).toContain('qualifying purchases');
+    });
+  });
+
+  describe('buildPrimeTrialUrl', () => {
+    it('deve gerar a URL de bounty do Amazon Prime 30-Day Free Trial com a tag de associado', () => {
+      const url = buildPrimeTrialUrl();
+      expect(url).toBe(`https://www.amazon.com/amazonprime?tag=${DEFAULT_AMAZON_TAG}`);
     });
   });
 });

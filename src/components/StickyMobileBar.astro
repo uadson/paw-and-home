@@ -1,0 +1,88 @@
+---
+/**
+ * Barra Flutuante Mobile de Alta Conversão (Sticky Mobile CTA).
+ *
+ * Exibida na base da tela em dispositivos móveis, mantendo o produto #1
+ * acessível a 1 toque de distância para maximizar o CTR e as comissões.
+ */
+import { buildAmazonUrl, getAffiliateRel } from '../utils/affiliate';
+
+interface Props {
+  productName: string;
+  asin: string;
+  badge?: string;
+  amazonTag?: string;
+  ctaText?: string;
+}
+
+const {
+  productName,
+  asin,
+  badge = 'Top Pick',
+  amazonTag,
+  ctaText = 'View on Amazon',
+} = Astro.props;
+
+const amazonUrl = buildAmazonUrl(asin, amazonTag);
+const relAttr = getAffiliateRel();
+---
+
+<div 
+  id="sticky-mobile-bar"
+  class="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-slate-950/95 backdrop-blur-md border-t border-slate-800 px-4 py-2.5 shadow-2xl transition-transform duration-300 translate-y-0"
+  role="complementary"
+  aria-label="Quick Amazon Purchase"
+>
+  <div class="flex items-center justify-between gap-3">
+    <!-- Info do Produto -->
+    <div class="min-w-0 flex-1">
+      <div class="flex items-center gap-1.5 mb-0.5">
+        <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
+        <span class="text-[10px] font-bold uppercase tracking-wider text-amber-400">
+          {badge}
+        </span>
+      </div>
+      <p class="text-xs font-semibold text-white truncate leading-tight">
+        {productName}
+      </p>
+    </div>
+
+    <!-- Botão de Ação -->
+    <div class="flex items-center gap-2 shrink-0">
+      <a 
+        href={amazonUrl}
+        target="_blank"
+        rel={relAttr}
+        class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 active:scale-95 text-slate-950 font-bold text-xs shadow-sm"
+      >
+        <span>{ctaText}</span>
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+        </svg>
+      </a>
+
+      <!-- Botão para fechar a barra -->
+      <button
+        id="dismiss-sticky-bar"
+        type="button"
+        class="p-1.5 text-slate-400 hover:text-white rounded-lg"
+        aria-label="Dismiss quick purchase bar"
+      >
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+  const dismissBtn = document.getElementById('dismiss-sticky-bar');
+  const stickyBar = document.getElementById('sticky-mobile-bar');
+  if (dismissBtn && stickyBar) {
+    dismissBtn.addEventListener('click', () => {
+      stickyBar.style.transform = 'translateY(100%)';
+      setTimeout(() => stickyBar.remove(), 300);
+    });
+  }
+</script>

@@ -55,6 +55,8 @@ featured: false
 rating: 4.8
 tags:
 ${item.tags.map((tag) => `  - "${tag}"`).join('\n')}
+topPickName: "${item.detailedProducts[0]?.name ? item.detailedProducts[0].name.replace(/"/g, '\\"') : ''}"
+topPickAsin: "${item.detailedProducts[0]?.asin || ''}"
 ---
 
 import ProductCard from '../../components/ProductCard.astro';

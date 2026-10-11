@@ -90,3 +90,20 @@ export function getAffiliateRel(): string {
 export function getFtcDisclosure(): string {
   return 'As an Amazon Associate, we earn from qualifying purchases. When you purchase through links on our site, we may earn an affiliate commission at no additional cost to you. Pricing and availability are subject to change on Amazon.';
 }
+
+/**
+ * Constrói a URL de afiliado para o programa de recompensa (Bounty) do Amazon Prime 30-Day Free Trial.
+ *
+ * A Amazon remunera o afiliado (US$ 3 a 5) quando um visitante se cadastra no período de teste gratuito.
+ *
+ * Args:
+ *   tag: Tag de afiliado personalizada opcional.
+ *
+ * Returns:
+ *   URL canônica de direcionamento para o cadastro do Prime com a tag de associado.
+ */
+export function buildPrimeTrialUrl(tag: string = DEFAULT_AMAZON_TAG): string {
+  const activeTag = tag || DEFAULT_AMAZON_TAG;
+  return `https://www.amazon.com/amazonprime?tag=${encodeURIComponent(activeTag)}`;
+}
+

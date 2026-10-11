@@ -19,6 +19,9 @@ const articles = defineCollection({
     featured: z.boolean().default(false),
     rating: z.number().min(0).max(5).optional(),
     tags: z.array(z.string()).default([]),
+    topPickName: z.string().optional(),
+    topPickAsin: z.string().optional(),
+    showPrimeBounty: z.boolean().default(true),
   }),
 });
 

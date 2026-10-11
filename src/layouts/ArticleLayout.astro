@@ -7,6 +7,8 @@
  */
 import BaseLayout from './BaseLayout.astro';
 import AffiliateDisclosure from '../components/AffiliateDisclosure.astro';
+import PrimeBountyCard from '../components/PrimeBountyCard.astro';
+import StickyMobileBar from '../components/StickyMobileBar.astro';
 import { buildArticleSchema, buildBreadcrumbSchema } from '../utils/seo';
 
 interface Props {
@@ -19,6 +21,9 @@ interface Props {
   heroImage?: string;
   heroImageAlt?: string;
   tags?: string[];
+  topPickName?: string;
+  topPickAsin?: string;
+  showPrimeBounty?: boolean;
 }
 
 const {
@@ -31,6 +36,9 @@ const {
   heroImage,
   heroImageAlt = title,
   tags = [],
+  topPickName,
+  topPickAsin,
+  showPrimeBounty = true,
 } = Astro.props;
 
 const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
@@ -153,6 +161,11 @@ const combinedSchemas = [articleSchema, breadcrumbSchema];
       <slot />
     </div>
 
+    <!-- Oferta de Recompensa Amazon Prime (Bounty Program) -->
+    {showPrimeBounty && (
+      <PrimeBountyCard />
+    )}
+
     <!-- Tags do Artigo -->
     {tags.length > 0 && (
       <div class="mt-12 pt-6 border-t border-slate-200 flex flex-wrap items-center gap-2">
@@ -170,4 +183,12 @@ const combinedSchemas = [articleSchema, breadcrumbSchema];
       <AffiliateDisclosure variant="card" />
     </div>
   </article>
+
+  <!-- Barra Flutuante Mobile de Alta Conversão -->
+  {topPickName && topPickAsin && (
+    <StickyMobileBar
+      productName={topPickName}
+      asin={topPickAsin}
+    />
+  )}
 </BaseLayout>
