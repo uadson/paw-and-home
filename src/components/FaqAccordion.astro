@@ -1,0 +1,63 @@
+---
+/**
+ * Componente de Perguntas Frequentes (FAQ) com Acordeão Acessível e Schema Markup.
+ *
+ * Renderiza acordeões usando tags HTML semânticas (<details> e <summary>) sem dependência
+ * de JavaScript no cliente e injeta Schema.org FAQPage para maximizar a captura de Rich Snippets.
+ */
+import { buildFaqSchema, type FaqItem } from '../utils/seo';
+
+interface Props {
+  title?: string;
+  items: FaqItem[];
+  injectSchema?: boolean;
+}
+
+const {
+  title = 'Frequently Asked Questions',
+  items = [],
+  injectSchema = true,
+} = Astro.props;
+
+const faqSchema = injectSchema && items.length > 0 ? buildFaqSchema(items) : null;
+---
+
+<section class="my-10" aria-labelledby="faq-heading">
+  {faqSchema && (
+    <script
+      type="application/ld+json"
+      is:inline
+      set:html={JSON.stringify(faqSchema)}
+    />
+  )}
+
+  {title && (
+    <h2 id="faq-heading" class="text-2xl font-bold text-slate-950 mb-6 flex items-center gap-2">
+      <svg class="w-6 h-6 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+      {title}
+    </h2>
+  )}
+
+  <div class="space-y-3">
+    {items.map((item, index) => (
+      <details 
+        class="group bg-white rounded-xl border border-slate-200 overflow-hidden transition-all duration-200 open:shadow-xs open:border-slate-300"
+        open={index === 0}
+      >
+        <summary class="flex items-center justify-between p-4 sm:p-5 font-semibold text-slate-900 cursor-pointer select-none hover:text-amber-700 transition-colors list-none">
+          <span class="text-sm sm:text-base pr-4 leading-snug">{item.question}</span>
+          <span class="w-6 h-6 rounded-full bg-slate-100 group-open:bg-amber-100 text-slate-500 group-open:text-amber-800 flex items-center justify-center shrink-0 transition-transform duration-200 group-open:rotate-180">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </span>
+        </summary>
+        <div class="px-4 pb-4 sm:px-5 sm:pb-5 text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-3">
+          <p>{item.answer}</p>
+        </div>
+      </details>
+    ))}
+  </div>
+</section>

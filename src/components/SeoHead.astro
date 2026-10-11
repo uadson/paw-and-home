@@ -1,0 +1,61 @@
+---
+/**
+ * Componente de cabeçalho para SEO On-Page e Metatags.
+ *
+ * Inclui OpenGraph, Twitter Cards, Canonical URL e suporte a JSON-LD schemas.
+ */
+interface Props {
+  title: string;
+  description: string;
+  canonicalUrl?: string;
+  ogImage?: string;
+  ogType?: 'website' | 'article';
+  schema?: Record<string, unknown> | Record<string, unknown>[];
+}
+
+const {
+  title,
+  description,
+  canonicalUrl = Astro.url.href,
+  ogImage = '/images/og-default.jpg',
+  ogType = 'website',
+  schema,
+} = Astro.props;
+
+const siteTitle = title.includes('|') ? title : `${title} | Paw & Home Guides`;
+const resolvedOgImage = new URL(ogImage, Astro.site || Astro.url.origin).href;
+---
+
+<!-- Metatags Essenciais -->
+<title>{siteTitle}</title>
+<meta name="description" content={description} />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="canonical" href={canonicalUrl} />
+<meta name="robots" content="index, follow" />
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content={ogType} />
+<meta property="og:url" content={canonicalUrl} />
+<meta property="og:title" content={siteTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={resolvedOgImage} />
+<meta property="og:locale" content="en_US" />
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:url" content={canonicalUrl} />
+<meta name="twitter:title" content={siteTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={resolvedOgImage} />
+
+<!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL.replace(/\/$/, '')}/favicon.svg`} />
+
+<!-- Dados Estruturados Schema.org (JSON-LD) -->
+{schema && (
+  <script
+    type="application/ld+json"
+    is:inline
+    set:html={JSON.stringify(Array.isArray(schema) ? schema : [schema])}
+  />
+)}

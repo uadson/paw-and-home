@@ -1,0 +1,65 @@
+---
+/**
+ * Componente de Rodapé do Site.
+ *
+ * Contém o disclaimer obrigatório do Amazon Associates, informações de direitos autorais
+ * e links institucionais necessários para aprovação em programas de afiliados.
+ */
+import { getFtcDisclosure } from '../utils/affiliate';
+
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
+const currentYear = new Date().getFullYear();
+const disclosureText = getFtcDisclosure();
+---
+
+<footer class="bg-slate-900 text-slate-400 text-xs mt-auto border-t border-slate-800">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8 pb-8 border-b border-slate-800">
+      <!-- Coluna de Marca -->
+      <div class="md:col-span-2">
+        <div class="flex items-center gap-2 mb-3">
+          <div class="w-7 h-7 rounded-lg bg-amber-400 text-slate-900 flex items-center justify-center font-black text-sm">
+            PH
+          </div>
+          <span class="font-bold text-white text-base">Paw & Home Guides</span>
+        </div>
+        <p class="text-slate-400 text-xs leading-relaxed max-w-md mb-4">
+          Unbiased, rigorously tested product comparisons and reviews for US pet owners and smart home organizers. We spend hours researching so you make confident purchases.
+        </p>
+      </div>
+
+      <!-- Links Rápidos -->
+      <div>
+        <h4 class="font-semibold text-white text-sm mb-3">Popular Niches</h4>
+        <ul class="space-y-2 text-xs">
+          <li><a href={`${baseUrl}/#pet-care`} class="hover:text-amber-400 transition-colors">Pet Hydration & Care</a></li>
+          <li><a href={`${baseUrl}/#home-organization`} class="hover:text-amber-400 transition-colors">Home & Kitchen Storage</a></li>
+          <li><a href={`${baseUrl}/#buying-guides`} class="hover:text-amber-400 transition-colors">Compact Living Gear</a></li>
+        </ul>
+      </div>
+
+      <!-- Conformidade e Legal -->
+      <div>
+        <h4 class="font-semibold text-white text-sm mb-3">Trust & Transparency</h4>
+        <ul class="space-y-2 text-xs">
+          <li><a href={`${baseUrl}/disclosure`} class="hover:text-amber-400 transition-colors">Affiliate Disclosure</a></li>
+          <li><a href={`${baseUrl}/editorial-policy`} class="hover:text-amber-400 transition-colors">Editorial Guidelines</a></li>
+          <li><a href={`${baseUrl}/privacy`} class="hover:text-amber-400 transition-colors">Privacy Policy</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Declaração Obrigatória Amazon Associates e FTC -->
+    <div class="space-y-3 text-slate-400 text-[11px] leading-relaxed">
+      <p>
+        <strong class="text-slate-300">Amazon Associates Disclosure:</strong> {disclosureText}
+      </p>
+      <p>
+        Certain content that appears on this site comes from Amazon Services LLC. This content is provided 'as is' and is subject to change or removal at any time. Product prices and availability are accurate as of the date/time indicated and are subject to change. Any price and availability information displayed on Amazon at the time of purchase will apply to the purchase of this product.
+      </p>
+      <p class="pt-4 border-t border-slate-800 text-slate-400 text-center sm:text-left">
+        &copy; {currentYear} Paw & Home Guides. All rights reserved. Amazon and the Amazon logo are trademarks of Amazon.com, Inc. or its affiliates.
+      </p>
+    </div>
+  </div>
+</footer>

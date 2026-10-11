@@ -1,0 +1,42 @@
+---
+/**
+ * Componente de Cabeçalho do Site.
+ *
+ * Apresenta a logo do site de nicho e menu de categorias otimizado para o mercado americano.
+ */
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<header class="sticky top-0 z-40 w-full bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-2xs">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+    <!-- Logo e Marca -->
+    <a href={`${baseUrl}/`} class="flex items-center gap-2 group">
+      <div class="w-9 h-9 rounded-xl bg-slate-900 text-amber-400 flex items-center justify-center font-black text-lg group-hover:scale-105 transition-transform">
+        <svg class="w-5 h-5 fill-amber-400" viewBox="0 0 24 24">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9v-2h2v2zm0-4H9V7h2v5zm4 4h-2v-2h2v2zm0-4h-2V7h2v5z" opacity=".2"/>
+          <path d="M4.5 10.5C3.67 10.5 3 11.17 3 12s.67 1.5 1.5 1.5S6 12.83 6 12s-.67-1.5-1.5-1.5zm15 0c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5-.67-1.5-1.5-1.5zm-11-4C7.67 6.5 7 7.17 7 8s.67 1.5 1.5 1.5S10 8.83 10 8s-.67-1.5-1.5-1.5zm7 0c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5-.67-1.5-1.5-1.5zM12 11.5c-2.49 0-4.5 2.01-4.5 4.5 0 2.22 3.1 6 4.5 6 1.4 0 4.5-3.78 4.5-6 0-2.49-2.01-4.5-4.5-4.5z"/>
+        </svg>
+      </div>
+      <div>
+        <span class="font-extrabold text-slate-900 text-lg tracking-tight block leading-none">Paw & Home</span>
+        <span class="text-[10px] font-semibold text-slate-400 uppercase tracking-widest block mt-0.5">Tested & Curated</span>
+      </div>
+    </a>
+
+    <!-- Navegação Primária -->
+    <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-600">
+      <a href={`${baseUrl}/`} class="hover:text-slate-900 transition-colors">Home</a>
+      <a href={`${baseUrl}/#pet-care`} class="hover:text-slate-900 transition-colors">Pet Care</a>
+      <a href={`${baseUrl}/#home-organization`} class="hover:text-slate-900 transition-colors">Home Organization</a>
+      <a href={`${baseUrl}/#buying-guides`} class="hover:text-slate-900 transition-colors">Buying Guides</a>
+    </nav>
+
+    <!-- Indicador de Confiança -->
+    <div class="flex items-center gap-3">
+      <span class="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-medium">
+        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+        2026 Buying Guides
+      </span>
+    </div>
+  </div>
+</header>

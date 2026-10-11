@@ -1,0 +1,43 @@
+---
+/**
+ * Página Dedicada de Divulgação de Afiliados (FTC & Amazon Associates Disclosure).
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getFtcDisclosure } from '../utils/affiliate';
+
+const disclosure = getFtcDisclosure();
+---
+
+<BaseLayout
+  title="Affiliate & FTC Disclosure"
+  description="Full transparency statement and Amazon Associates Operating Agreement compliance for Paw & Home Guides."
+>
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12 prose text-slate-800">
+    <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-950 mb-6">Affiliate Disclosure Statement</h1>
+
+    <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 text-amber-900 text-sm mb-8">
+      <p class="font-semibold mb-1">In compliance with FTC guidelines:</p>
+      <p>{disclosure}</p>
+    </div>
+
+    <h2>Amazon Associates Program</h2>
+    <p>
+      Paw & Home Guides is a participant in the Amazon Services LLC Associates Program, an affiliate advertising program designed to provide a means for website owners to earn fees by advertising and linking to Amazon.com and affiliated sites.
+    </p>
+
+    <h2>How Our Affiliate Links Work</h2>
+    <p>
+      When you click on links pointing to Amazon.com on this site and subsequently purchase an item, we may receive a modest referral commission from Amazon. This does <strong>not</strong> increase the purchase price for you in any way.
+    </p>
+
+    <h2>Editorial Independence</h2>
+    <p>
+      Our product rankings and evaluations are determined strictly through independent research, specification audits, customer sentiment analysis, and testing. Manufacturers cannot purchase higher positions or favorable verdicts on our guides.
+    </p>
+
+    <h2>Price and Availability Notice</h2>
+    <p>
+      Prices and availability of products listed on this website are subject to change without notice. While we strive to maintain accurate recommendations, the final price and inventory status will be displayed directly on Amazon at the moment of checkout.
+    </p>
+  </div>
+</BaseLayout>

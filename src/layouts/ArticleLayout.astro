@@ -1,0 +1,173 @@
+---
+/**
+ * Template Base de Artigo e Review Focado em Conversão e SEO.
+ *
+ * Implementa Schema.org Article, breadcrumbs visuais e estruturados,
+ * banner de conformidade FTC no topo e design de alta legibilidade.
+ */
+import BaseLayout from './BaseLayout.astro';
+import AffiliateDisclosure from '../components/AffiliateDisclosure.astro';
+import { buildArticleSchema, buildBreadcrumbSchema } from '../utils/seo';
+
+interface Props {
+  title: string;
+  description: string;
+  publishDate: Date | string;
+  updatedDate?: Date | string;
+  author?: string;
+  category: string;
+  heroImage?: string;
+  heroImageAlt?: string;
+  tags?: string[];
+}
+
+const {
+  title,
+  description,
+  publishDate,
+  updatedDate,
+  author = 'Pet Care Editorial Team',
+  category,
+  heroImage,
+  heroImageAlt = title,
+  tags = [],
+} = Astro.props;
+
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
+const currentUrl = Astro.url.href;
+
+// Formatação amigável de datas para o padrão americano (US)
+const formattedDate = new Intl.DateTimeFormat('en-US', {
+  month: 'long',
+  day: 'numeric',
+  year: 'numeric',
+}).format(new Date(publishDate));
+
+const formattedUpdatedDate = updatedDate ? new Intl.DateTimeFormat('en-US', {
+  month: 'long',
+  day: 'numeric',
+  year: 'numeric',
+}).format(new Date(updatedDate)) : null;
+
+// Schemas JSON-LD
+const articleSchema = buildArticleSchema({
+  title,
+  description,
+  url: currentUrl,
+  publishDate,
+  updatedDate,
+  author,
+  image: heroImage ? new URL(heroImage, Astro.site || Astro.url.origin).href : undefined,
+});
+
+const breadcrumbSchema = buildBreadcrumbSchema([
+  { name: 'Home', url: new URL(baseUrl || '/', Astro.site || Astro.url.origin).href },
+  { name: category, url: new URL(`${baseUrl}/#${category.toLowerCase().replace(/\s+/g, '-')}`, Astro.site || Astro.url.origin).href },
+  { name: title, url: currentUrl },
+]);
+
+const combinedSchemas = [articleSchema, breadcrumbSchema];
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  canonicalUrl={currentUrl}
+  ogImage={heroImage}
+  ogType="article"
+  schema={combinedSchemas}
+>
+  <article class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+    <!-- Breadcrumb de Navegação -->
+    <nav class="flex items-center gap-2 text-xs text-slate-500 mb-6 overflow-x-auto" aria-label="Breadcrumb">
+      <a href={`${baseUrl}/`} class="hover:text-slate-900 transition-colors">Home</a>
+      <span>/</span>
+      <span class="text-amber-700 font-medium">{category}</span>
+      <span>/</span>
+      <span class="text-slate-400 truncate max-w-[200px] sm:max-w-xs">{title}</span>
+    </nav>
+
+    <!-- Cabeçalho do Artigo -->
+    <header class="mb-6">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-100 text-amber-900 text-xs font-semibold uppercase tracking-wider mb-4">
+        <span>{category}</span>
+        <span>•</span>
+        <span>Tested & Reviewed</span>
+      </div>
+
+      <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-slate-950 tracking-tight leading-tight">
+        {title}
+      </h1>
+
+      <p class="mt-4 text-lg text-slate-600 leading-relaxed font-normal">
+        {description}
+      </p>
+
+      <!-- Metadados de Autoria e Atualização -->
+      <div class="mt-6 pt-4 border-t border-slate-200 flex flex-wrap items-center justify-between gap-4 text-xs text-slate-500">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-full bg-slate-200 border border-slate-300 flex items-center justify-center font-bold text-slate-700">
+            {author.charAt(0)}
+          </div>
+          <div>
+            <span class="font-semibold text-slate-900 block">{author}</span>
+            <span>Reviewed & Verified by Specialists</span>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-4">
+          <div>
+            <span class="text-slate-400">Published:</span>
+            <time datetime={new Date(publishDate).toISOString()} class="font-medium text-slate-700 ml-1">
+              {formattedDate}
+            </time>
+          </div>
+          {formattedUpdatedDate && (
+            <div class="bg-emerald-50 text-emerald-800 px-2 py-0.5 rounded border border-emerald-200">
+              <span>Updated: <strong>{formattedUpdatedDate}</strong></span>
+            </div>
+          )}
+        </div>
+      </div>
+    </header>
+
+    <!-- FTC Disclosure Banner no Topo (Obrigatório) -->
+    <AffiliateDisclosure variant="banner" />
+
+    <!-- Imagem Hero (se houver) -->
+    {heroImage && (
+      <div class="my-8 rounded-2xl overflow-hidden border border-slate-200 bg-slate-100 shadow-xs">
+        <img 
+          src={heroImage} 
+          alt={heroImageAlt}
+          width="1200"
+          height="630"
+          class="w-full h-auto object-cover max-h-[460px]"
+          loading="eager"
+        />
+      </div>
+    )}
+
+    <!-- Corpo do Artigo em Markdown/MDX -->
+    <div class="prose max-w-none text-slate-800">
+      <slot />
+    </div>
+
+    <!-- Tags do Artigo -->
+    {tags.length > 0 && (
+      <div class="mt-12 pt-6 border-t border-slate-200 flex flex-wrap items-center gap-2">
+        <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Related Topics:</span>
+        {tags.map((tag) => (
+          <span class="inline-block bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs px-2.5 py-1 rounded-md transition-colors">
+            #{tag}
+          </span>
+        ))}
+      </div>
+    )}
+
+    <!-- Disclosure no rodapé do artigo -->
+    <div class="mt-10">
+      <AffiliateDisclosure variant="card" />
+    </div>
+  </article>
+</BaseLayout>

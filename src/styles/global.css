@@ -1,0 +1,48 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --primary: #0f172a;
+    --primary-foreground: #ffffff;
+    --accent-amazon: #f59e0b;
+    --accent-amazon-hover: #d97706;
+  }
+
+  body {
+    @apply bg-slate-50 text-slate-900 font-sans antialiased min-h-screen flex flex-col;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  /* Otimizações de renderização para SEO e Core Web Vitals */
+  img {
+    content-visibility: auto;
+  }
+}
+
+.prose h2 {
+  @apply text-2xl font-bold text-slate-900 mt-8 mb-4 border-b border-slate-200 pb-2 scroll-mt-20;
+}
+
+.prose h3 {
+  @apply text-xl font-semibold text-slate-800 mt-6 mb-3 scroll-mt-20;
+}
+
+.prose p {
+  @apply text-slate-700 leading-relaxed mb-4;
+}
+
+.prose ul {
+  @apply list-disc list-inside space-y-2 mb-4 text-slate-700;
+}
+
+.prose ol {
+  @apply list-decimal list-inside space-y-2 mb-4 text-slate-700;
+}
+
+.prose a {
+  @apply text-amber-700 underline font-medium hover:text-amber-800 transition-colors;
+}
+
+.prose strong {
+  @apply font-bold text-slate-900;
+}

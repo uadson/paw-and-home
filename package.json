@@ -1,0 +1,39 @@
+{
+  "name": "amazon-affiliate-niche-site",
+  "version": "1.0.0",
+  "description": "High-performance, SEO-optimized Amazon Affiliate Niche Site for the US market",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "test": "vitest run",
+    "new:article": "node scripts/new-article.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/uadson/amazon-affiliate-niche-site.git"
+  },
+  "keywords": [
+    "astro",
+    "amazon-affiliate",
+    "seo",
+    "niche-site"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@astrojs/mdx": "^8.0.3",
+    "@astrojs/sitemap": "^3.7.4",
+    "@tailwindcss/vite": "^4.3.3",
+    "astro": "^7.3.8",
+    "tailwindcss": "^4.3.3"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.5",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.3"
+  }
+}

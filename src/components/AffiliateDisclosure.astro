@@ -1,0 +1,49 @@
+---
+/**
+ * Componente de Divulgação de Afiliado (Amazon Associates & FTC Disclosure).
+ *
+ * Exibe aviso obrigatório exigido pelas leis norte-americanas da FTC e pelo
+ * contrato de afiliados da Amazon.
+ */
+import { getFtcDisclosure } from '../utils/affiliate';
+
+interface Props {
+  variant?: 'banner' | 'compact' | 'card';
+  className?: string;
+}
+
+const { variant = 'banner', className = '' } = Astro.props;
+const disclosureText = getFtcDisclosure();
+---
+
+{variant === 'banner' && (
+  <aside 
+    class={`bg-amber-50/80 border border-amber-200/90 rounded-xl p-3.5 sm:p-4 text-xs sm:text-sm text-amber-900/90 shadow-xs flex items-start gap-3 my-6 ${className}`}
+    aria-label="Affiliate Disclosure"
+  >
+    <div class="mt-0.5 text-amber-600 shrink-0" aria-hidden="true">
+      <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+    </div>
+    <div class="leading-relaxed">
+      <span class="font-semibold text-amber-950 uppercase tracking-wider text-[11px] block sm:inline mr-1">
+        FTC Disclosure:
+      </span>
+      <span>{disclosureText}</span>
+    </div>
+  </aside>
+)}
+
+{variant === 'compact' && (
+  <div class={`text-[11px] text-slate-500 italic py-1 border-b border-slate-100 ${className}`}>
+    <span>Reader-supported: When you buy through our links, we may earn an affiliate commission at no extra cost to you.</span>
+  </div>
+)}
+
+{variant === 'card' && (
+  <div class={`bg-slate-50 border border-slate-200 rounded-lg p-3 text-xs text-slate-600 ${className}`}>
+    <p class="font-medium text-slate-700 mb-1">Affiliate Partnership Notice</p>
+    <p>{disclosureText}</p>
+  </div>
+)}
