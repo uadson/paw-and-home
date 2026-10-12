@@ -11,7 +11,8 @@
     "astro": "astro",
     "test": "vitest run",
     "new:article": "node scripts/new-article.mjs",
-    "publish:next": "node scripts/publish-next.mjs"
+    "publish:next": "node scripts/publish-next.mjs",
+    "indexnow": "node scripts/notify-indexnow.mjs"
   },
   "repository": {
     "type": "git",
