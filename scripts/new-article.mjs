@@ -99,7 +99,7 @@ To help you make an informed investment without second-guessing, our editorial t
       name: "Top Rated Pick Model #1",
       badge: "Best Overall",
       rating: 4.8,
-      asin: "B08JCV7XG7",
+      asin: "B09DSVFNRW",
       image: "https://m.media-amazon.com/images/I/71R2o5nK5CL._AC_SL1500_.jpg",
       highlight: "Premium durability, reliable performance, and highest user satisfaction"
     },
@@ -124,7 +124,7 @@ To help you make an informed investment without second-guessing, our editorial t
   name="Premium Pick Model #1"
   tagline="The undisputed benchmark for everyday durability and high performance"
   brand="BrandName"
-  asin="B08JCV7XG7"
+  asin="B09DSVFNRW"
   image="https://m.media-amazon.com/images/I/71R2o5nK5CL._AC_SL1500_.jpg"
   rating={4.8}
   reviewCount={14500}
