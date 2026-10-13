@@ -137,7 +137,7 @@
     "author": "Mark Evans, Home Organization Specialist",
     "heroImage": "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?w=1200&auto=format&fit=crop&q=80",
     "heroImageAlt": "Neatly divided kitchen utensil drawer with natural bamboo organizers",
-    "status": "pending",
+    "status": "published",
     "tags": [
       "Home Organization",
       "Kitchen Storage",
@@ -208,7 +208,8 @@
         "question": "Will spring-loaded dividers break my drawer walls?",
         "text": "No. Quality dividers use calibrated spring tension that provides solid grip without exerting structural pressure that could bow modern cabinet sides."
       }
-    ]
+    ],
+    "publishedAt": "2026-10-13"
   },
   {
     "id": "best-slow-feeder-dog-bowls",
