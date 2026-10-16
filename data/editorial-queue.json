@@ -220,7 +220,7 @@
     "author": "Dr. Amanda Foster, Canine Wellness Consultant",
     "heroImage": "https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=1200&auto=format&fit=crop&q=80",
     "heroImageAlt": "Labrador retriever calmly navigating a slow feeder maze bowl",
-    "status": "pending",
+    "status": "published",
     "tags": [
       "Dog Care",
       "Slow Feeder",
@@ -279,6 +279,7 @@
         "question": "Are slow feeder bowls safe for wet food and raw diets?",
         "text": "Yes, high-grade food-safe ABS plastic bowls can accommodate wet food, canned pate, and raw diets, provided they are rinsed immediately after meals."
       }
-    ]
+    ],
+    "publishedAt": "2026-10-16"
   }
 ]
