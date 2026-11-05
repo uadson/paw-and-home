@@ -59,3 +59,27 @@ Este repositório contém o código-fonte de um site estático de curadoria de p
 ### 3. Pinterest Tag (Telemetria & Pixel)
 - **Script Base:** Injetado via `SeoHead.astro` utilizando `buildPinterestTagSnippet` com suporte à variável de ambiente `PUBLIC_PINTEREST_TAG_ID`.
 - **Rastreamento de Conversão:** Listener em `BaseLayout.astro` que captura cliques em links afiliados e despacha o evento `pintrk('track', 'lead', { lead_type: 'Amazon Outbound Click', asin, product_name })`.
+
+---
+
+## 4. Aplicação de Monitoramento e Expansão Autônoma (Fly.io + FastAPI)
+
+### 1. Painel de Supervisão e Controle
+- **Localização:** Pasta `dashboard/` configurada como pacote Python 3.12/3.13 gerenciado com `uv`.
+- **Hospedagem:** Pronta para deploy no **Fly.io** (`fly.toml` / `infra/docker/Dockerfile`) em máquina micro gratuita (`shared-cpu-1x`, 256MB RAM) sem interrupção do site estático no GitHub Pages.
+- **Endpoints:**
+  - `GET /health`: Sonda de integridade pública para Fly.io.
+  - `GET /`: Interface visual responsiva dark mode (Tailwind CSS) com estatísticas da fila editorial e da cota diária do Pinterest.
+  - `GET /api/stats`: Métricas em JSON para telemetria.
+  - `GET /api/queue`: Listagem de artigos e status de publicação/Pin.
+  - `POST /api/generate-article`: Geração autônoma de artigos em formato compatível com `data/editorial-queue.json`.
+
+### 2. Motor de Expansão Autônoma via LLM (Zero GPU & Custo Zero)
+- **Provedor:** Groq Cloud API com o modelo open-source `llama-3.3-70b-versatile` (`LlmArticleGenerator`).
+- **Performance e Custo:** Inferência ultrarrápida (>300 tokens/segundo) sem custo de GPU local e sem impacto na memória RAM do container (consome < 100MB RAM).
+- **Saída Estruturada:** Gera títulos atraentes com gatilhos de CTR, descrição com compliance FTC, seções estruturadas e lista de produtos com ASINs e argumentos de venda em inglês americano (`en-US`).
+
+### 3. Diretrizes de Segurança (Repositório Público)
+- O repositório no GitHub é **público** devido ao GitHub Pages gratuito.
+- **Proibição Absoluta de Credenciais no Git:** Nenhuma chave (`GROQ_API_KEY`, `PINTEREST_APP_SECRET`, tokens) ou senha deve ser versionada.
+- **Autenticação HTTP Basic Obrigatória:** Quando a variável `DASHBOARD_PASSWORD` estiver definida, todas as rotas operacionais do FastAPI exigem autenticação HTTP Basic (`secrets.compare_digest`), mantendo apenas `/health` desprotegido para a plataforma de nuvem.

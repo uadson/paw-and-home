@@ -1,0 +1,10 @@
+[Unit]
+Description=Docker System Prune Maintenance Service
+After=docker.service
+Requires=docker.service
+
+[Service]
+Type=oneshot
+ExecStart=/bin/bash /opt/paw-and-home/infra/maintenance/docker-cleanup.sh
+StandardOutput=journal
+StandardError=journal

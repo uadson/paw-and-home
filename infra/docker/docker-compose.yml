@@ -1,0 +1,24 @@
+services:
+  paw-monitor:
+    build:
+      context: ../..
+      dockerfile: infra/docker/Dockerfile
+    container_name: paw-and-home-monitor
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      - PORT=8080
+      - PINTEREST_ENVIRONMENT=sandbox
+      - PINTEREST_APP_ID=1623625
+      - PINTEREST_APP_SECRET=${PINTEREST_APP_SECRET:-}
+      - PINTEREST_ACCESS_TOKEN=${PINTEREST_ACCESS_TOKEN:-}
+      - PINTEREST_BOARD_ID=${PINTEREST_BOARD_ID:-818177525994526460}
+      - GROQ_API_KEY=${GROQ_API_KEY:-}
+    volumes:
+      - ../../data:/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3

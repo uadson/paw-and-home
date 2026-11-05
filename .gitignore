@@ -4,6 +4,10 @@ dist/
 
 # Dependencies
 node_modules/
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
 
 # Environment variables
 .env

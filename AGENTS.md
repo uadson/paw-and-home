@@ -34,3 +34,9 @@ Você atua como Arquiteto de Software Sênior e Especialista em Integrações, S
    - Otimize o carregamento de imagens e minimize o bloqueio de renderização por scripts terceiros para manter pontuação verde (90+) no Google Lighthouse.
    - Garanta que testes unitários com Vitest cubram novas utilidades e componentes críticos na pasta `__tests__/` antes de qualquer entrega de código (TDD).
    - Mantenha docstrings no padrão Google Style e responda sempre em **Português do Brasil (PT-BR)** nas interações e relatórios técnicos.
+
+5. **Painel de Monitoramento FastAPI & Expansão Autônoma via LLM (Fly.io):**
+   - **Arquitetura Desacoplada:** O site estático continua servido via GitHub Pages (`https://uadson.github.io/paw-and-home`), enquanto a API de monitoramento e controle roda em container FastAPI no **Fly.io** (`fly.toml` / `infra/docker/`).
+   - **Segurança Rigorosa (Repositório Público):** Jamais commitar segredos (`.env`, tokens, senhas). Todos os endpoints de administração (`/`, `/api/stats`, `/api/queue`, `/api/generate-article`) são estritamente protegidos por HTTP Basic Authentication (`DASHBOARD_PASSWORD`), mantendo apenas `/health` aberto para sondas de integridade do Fly.io.
+   - **Expansão Autônoma de Custo Zero (Sem GPU):** Utiliza Groq Cloud API com `llama-3.3-70b-versatile` para gerar títulos, hooks e outlines de artigos em formato JSON nativo diretamente na fila editorial (`data/editorial-queue.json`).
+   - **Infraestrutura e DevOps:** Padrão de pastas `/infra/docker/` e `/infra/maintenance/`, dependências gerenciadas via `uv`, e testes de unidade com `pytest` na pasta `dashboard/tests/`.

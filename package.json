@@ -1,6 +1,6 @@
 {
   "name": "paw-and-home",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "description": "High-performance, SEO-optimized Amazon Affiliate Niche Site for the US market",
   "type": "module",
   "scripts": {
@@ -15,7 +15,9 @@
     "indexnow": "node scripts/notify-indexnow.mjs",
     "publish:pinterest": "node scripts/pinterest-publish.mjs",
     "publish:pinterest:multi": "node scripts/pinterest-publish.mjs --multi-pin",
-    "oauth:pinterest": "node scripts/pinterest-oauth.mjs"
+    "oauth:pinterest": "node scripts/pinterest-oauth.mjs",
+    "dashboard:dev": "cd dashboard && uv run uvicorn app.main:app --reload --port 8000",
+    "dashboard:test": "cd dashboard && uv run pytest"
   },
   "repository": {
     "type": "git",
