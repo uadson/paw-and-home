@@ -7,6 +7,25 @@
 
 import { generateAdUtmLink } from './tracking';
 
+export const PINTEREST_PROD_API_URL = 'https://api.pinterest.com/v5';
+export const PINTEREST_SANDBOX_API_URL = 'https://api-sandbox.pinterest.com/v5';
+
+/**
+ * Retorna o endpoint base da API do Pinterest v5 de acordo com o ambiente configurado.
+ *
+ * Args:
+ *   env: Nome do ambiente ('production' | 'sandbox').
+ *
+ * Returns:
+ *   A URL base oficial correspondente.
+ */
+export function getPinterestApiBaseUrl(env: string = 'production'): string {
+  if (typeof env === 'string' && env.trim().toLowerCase() === 'sandbox') {
+    return PINTEREST_SANDBOX_API_URL;
+  }
+  return PINTEREST_PROD_API_URL;
+}
+
 export interface PinData {
   title: string;
   description: string;

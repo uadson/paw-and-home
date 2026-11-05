@@ -3,6 +3,7 @@ import {
   validatePinCompliance,
   PinterestRateLimiter,
   buildPinPayload,
+  getPinterestApiBaseUrl,
 } from '../src/utils/pinterest';
 
 describe('pinterest integration utils (integração e compliance Pinterest API v5)', () => {
@@ -103,6 +104,19 @@ describe('pinterest integration utils (integração e compliance Pinterest API v
       expect(payload.link).toContain('utm_medium=pin');
       expect(payload.media_source.source_type).toBe('image_url');
       expect(payload.media_source.url).toBe('https://images.unsplash.com/photo-cat.jpg');
+    });
+  });
+
+  describe('getPinterestApiBaseUrl', () => {
+    it('deve retornar a URL de sandbox quando o ambiente for "sandbox"', () => {
+      expect(getPinterestApiBaseUrl('sandbox')).toBe('https://api-sandbox.pinterest.com/v5');
+      expect(getPinterestApiBaseUrl('SANDBOX')).toBe('https://api-sandbox.pinterest.com/v5');
+    });
+
+    it('deve retornar a URL de produção por padrão', () => {
+      expect(getPinterestApiBaseUrl()).toBe('https://api.pinterest.com/v5');
+      expect(getPinterestApiBaseUrl('production')).toBe('https://api.pinterest.com/v5');
+      expect(getPinterestApiBaseUrl('unknown')).toBe('https://api.pinterest.com/v5');
     });
   });
 });

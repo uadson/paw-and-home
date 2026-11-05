@@ -98,6 +98,11 @@ async function main() {
   const siteUrl = (process.env.SITE_URL || 'https://uadson.github.io/paw-and-home').replace(/\/$/, '');
   const boardId = process.env.PINTEREST_BOARD_ID || '1234567890';
   const accessToken = process.env.PINTEREST_ACCESS_TOKEN;
+  const envMode = process.env.PINTEREST_ENVIRONMENT || 'production';
+  const apiBaseUrl = process.env.PINTEREST_API_BASE_URL ||
+    (envMode.toLowerCase() === 'sandbox' ? 'https://api-sandbox.pinterest.com/v5' : 'https://api.pinterest.com/v5');
+
+  console.log(`🌍 Ambiente API: ${envMode.toUpperCase()} (${apiBaseUrl})`);
 
   let successCount = 0;
 
@@ -141,7 +146,7 @@ async function main() {
       successCount++;
     } else {
       try {
-        const res = await fetch('https://api.pinterest.com/v5/pins', {
+        const res = await fetch(`${apiBaseUrl}/pins`, {
           method: 'POST',
           headers: {
             Authorization: `Bearer ${accessToken}`,

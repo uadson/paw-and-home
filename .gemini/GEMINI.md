@@ -36,6 +36,7 @@ Este repositório contém o código-fonte de um site estático de curadoria de p
 ### 1. Parâmetros e Credenciais da API (Tier Trial)
 - **Pinterest App ID:** `1623625`
 - **Referência Oficial:** [`pinterest/api-quickstart`](https://github.com/pinterest/api-quickstart)
+- **Ambientes Suportados:** Sandbox (`https://api-sandbox.pinterest.com/v5`) e Produção (`https://api.pinterest.com/v5`), configuráveis via variável `PINTEREST_ENVIRONMENT`.
 - **Cota Diária:** 1.000 requisições a cada 24 horas (janela móvel).
 - **Consumo Estimado:** Publicar de 10 a 25 Pins orgânicos diários consome entre 10 e 50 requisições/dia (< 5% da cota).
 - **Rate Limiting:** Implementado na classe `PinterestRateLimiter` (`src/utils/pinterest.ts`), controlando requisições e emitindo alertas caso o consumo atinja 90% da cota diária.
