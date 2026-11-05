@@ -212,3 +212,73 @@ export function buildPinPayload(article: ArticlePinInput): PinterestPinPayload {
     },
   };
 }
+
+/**
+ * Gera 4 variações estratégicas de Pins para o mesmo artigo com ganchos psicológicos complementares.
+ *
+ * Cria ângulos focados em:
+ * 1. Dor e alívio imediato (pain_relief);
+ * 2. Custo-benefício e valor (budget_value);
+ * 3. Durabilidade e qualidade de construção (durability_quality);
+ * 4. Comparativo prático e recomendação de especialistas (comparison_testing).
+ *
+ * Args:
+ *   article: Dados do artigo editorial.
+ *
+ * Returns:
+ *   Lista com 4 payloads formatados e prontos para publicação na Pinterest API v5.
+ */
+export function generateMultiPinHooks(article: ArticlePinInput): PinterestPinPayload[] {
+  const categoryTag = article.category.replace(/\s+/g, '');
+  const cleanSiteUrl = article.siteUrl.replace(/\/$/, '');
+  const rawArticleUrl = `${cleanSiteUrl}/articles/${article.slug}`;
+
+  const hooks = [
+    {
+      hookId: 'hook_pain',
+      title: `Need Fast Relief for Your Dog? Top ${article.category} Ranked`,
+      description: `Stop letting discomfort ruin your daily routine. We tested top ${article.category.toLowerCase()} options that bring real relief. See the full review! #ad #affiliate #${categoryTag}`,
+    },
+    {
+      hookId: 'hook_value',
+      title: `Best Bang for Your Buck: Top ${article.category} of 2026`,
+      description: `Don't overpay for overpriced brands. We tested affordable ${article.category.toLowerCase()} options that deliver premium quality on Amazon. #ad #affiliate #${categoryTag}`,
+    },
+    {
+      hookId: 'hook_durability',
+      title: `Built to Last: Durable & Easy-Clean ${article.category} Reviewed`,
+      description: `Tired of buying replacements every 6 months? We ranked the toughest, machine-washable ${article.category.toLowerCase()} products on Amazon. #ad #affiliate #${categoryTag}`,
+    },
+    {
+      hookId: 'hook_comparison',
+      title: `Tested & Rated: Which ${article.category} is Actually Worth It?`,
+      description: `We compared the top 5 contenders side-by-side to find the ultimate winner. See the specs, pros & cons before you buy! #ad #affiliate #${categoryTag}`,
+    },
+  ];
+
+  return hooks.map((h) => {
+    const trackedLink = generateAdUtmLink(rawArticleUrl, {
+      campaign: article.slug,
+      medium: 'pin',
+      source: 'pinterest',
+      content: h.hookId,
+    });
+
+    const cleanTitle = h.title.length > 100 ? `${h.title.slice(0, 97)}...` : h.title;
+    let cleanDesc = h.description;
+    if (cleanDesc.length > 500) {
+      cleanDesc = `${cleanDesc.slice(0, 497)}...`;
+    }
+
+    return {
+      board_id: article.boardId,
+      title: cleanTitle,
+      description: cleanDesc,
+      link: trackedLink,
+      media_source: {
+        source_type: 'image_url',
+        url: article.heroImage,
+      },
+    };
+  });
+}

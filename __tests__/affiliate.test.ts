@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   buildAmazonUrl,
+  buildAmazonAddToCartUrl,
   extractAsin,
   getAffiliateRel,
   getFtcDisclosure,
@@ -67,6 +68,29 @@ describe('affiliate utils (utilitários de afiliado)', () => {
       const asin = 'B0056ASTDU';
       const result = buildAmazonUrl(asin, { tag: 'pawandhome-20', subTag: 'ad_campaign_spring' });
       expect(result).toBe('https://www.amazon.com/dp/B0056ASTDU?tag=pawandhome-20&ascsubtag=ad_campaign_spring');
+    });
+  });
+
+  describe('buildAmazonAddToCartUrl', () => {
+    it('deve gerar a URL oficial de Add to Cart da Amazon com tag de associado e quantidade 1', () => {
+      const asin = 'B089RGDQBB';
+      const url = buildAmazonAddToCartUrl(asin);
+      expect(url).toContain('https://www.amazon.com/gp/aws/cart/add.html');
+      expect(url).toContain('ASIN.1=B089RGDQBB');
+      expect(url).toContain('Quantity.1=1');
+      expect(url).toContain(`AssociateTag=${DEFAULT_AMAZON_TAG}`);
+    });
+
+    it('deve incluir o parâmetro ascsubtag no link de carrinho para rastreamento de 90 dias', () => {
+      const asin = 'B089RGDQBB';
+      const url = buildAmazonAddToCartUrl(asin, { tag: 'pawandhome-20', subTag: 'pin_orthopedic_bed' });
+      expect(url).toContain('AssociateTag=pawandhome-20');
+      expect(url).toContain('ascsubtag=pin_orthopedic_bed');
+    });
+
+    it('deve retornar a URL original caso não consiga extrair um ASIN válido', () => {
+      const invalid = 'https://www.example.com/not-amazon';
+      expect(buildAmazonAddToCartUrl(invalid)).toBe(invalid);
     });
   });
 

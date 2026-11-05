@@ -12,11 +12,13 @@ Este repositório contém o código-fonte de um site estático de curadoria de p
    - **Deploy & Hospedagem:** GitHub Pages com pipeline de entrega contínua (CI/CD) via GitHub Actions.
    - **Automação Editorial:** Fila editorial estruturada em `data/editorial-queue.json` acionada por agendamento (cron) duas vezes por semana (`auto-publish.yml`).
    - **Feed de Distribuição Pinterest:** Endpoint estático `/pinterest-feed.xml` com suporte completo a RSS 2.0 e enclosures para Rich Pins.
+   - **Gerador de Criativos Verticais:** Endpoint `/api/pin-image/[slug].svg` que compila criativos vetoriais de 1000x1500px em tempo de build para alta conversão no Pinterest.
 
 2. **Design, UI/UX e Conversão (Mobile-First):**
    - Layout limpo, minimalista e com carregamento ultrarrápido (< 1s).
    - Componentes orientados à conversão: `ProductCard`, `ComparisonTable`, `AffiliateDisclosure`, `PrimeBountyCard` e `StickyMobileBar`.
    - CTAs evidentes ("Check Price on Amazon", "View on Amazon").
+   - **Janela de Cookie de 90 Dias (Add to Cart):** Implementação de botões de adição direta ao carrinho (`buildAmazonAddToCartUrl`) estendendo a janela de atribuição de 24 horas para 90 dias.
    - Instrumentação com atributos `data-track="amazon-outbound"`, `data-asin` e `data-product-name` para rastreamento de cliques de saída.
 
 3. **Internacionalização e Mercado-Alvo:**
@@ -43,11 +45,16 @@ Este repositório contém o código-fonte de um site estático de curadoria de p
 - **Autenticação OAuth 2.0:** Script `scripts/pinterest-oauth.mjs` que inicia servidor local em `http://localhost:8085/`, executa a troca de código por Access Token e Refresh Token, e os salva em `.pinterest-token.json`.
 - **Automação via CI/CD:** Script `scripts/pinterest-publish.mjs` conectado ao workflow `.github/workflows/auto-publish.yml` para publicação contínua de novos artigos.
 
-### 2. Estratégia de Entrega de Conteúdo e Anúncios
-- **Formato Visual dos Criativos:** Pins e anúncios verticais (proporção 2:3, preferencialmente 1000x1500px).
+### 2. Estratégia de Entrega de Conteúdo e Anúncios (Multi-Pinning)
+- **Formato Visual dos Criativos:** Pins verticais em proporção 2:3 (1000x1500px) gerados via `src/utils/pin-image.ts`.
+- **Estratégia de Multi-Pinning:** Método `generateMultiPinHooks` que desdobra cada artigo publicado em 4 criativos com ganchos complementares em inglês americano:
+  1. `hook_pain`: Dor e alívio imediato para pets/donos;
+  2. `hook_value`: Custo-benefício e compra inteligente;
+  3. `hook_durability`: Durabilidade, facilidade de lavagem e resistência;
+  4. `hook_comparison`: Prova social, testes laboratoriais e notas de compradores.
 - **Destino do Tráfego:** URLs canônicas com parâmetros de rastreamento UTM geradas via `generateAdUtmLink`:
-  `https://uadson.github.io/paw-and-home/articles/<slug>/?utm_source=pinterest&utm_medium=pin&utm_campaign=<slug>`
-- **Sub-Tracking Amazon:** Links da Amazon gerados com suporte ao parâmetro `ascsubtag` (`buildAmazonUrl(asin, { tag, subTag })`) para atribuir conversões aos Pins.
+  `https://uadson.github.io/paw-and-home/articles/<slug>/?utm_source=pinterest&utm_medium=pin&utm_campaign=<slug>&utm_content=<hook>`
+- **Sub-Tracking Amazon:** Links da Amazon gerados com suporte ao parâmetro `ascsubtag` (`buildAmazonUrl` e `buildAmazonAddToCartUrl`) para atribuir conversões aos Pins.
 
 ### 3. Pinterest Tag (Telemetria & Pixel)
 - **Script Base:** Injetado via `SeoHead.astro` utilizando `buildPinterestTagSnippet` com suporte à variável de ambiente `PUBLIC_PINTEREST_TAG_ID`.

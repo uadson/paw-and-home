@@ -3,6 +3,7 @@ import {
   validatePinCompliance,
   PinterestRateLimiter,
   buildPinPayload,
+  generateMultiPinHooks,
   getPinterestApiBaseUrl,
 } from '../src/utils/pinterest';
 
@@ -117,6 +118,46 @@ describe('pinterest integration utils (integração e compliance Pinterest API v
       expect(getPinterestApiBaseUrl()).toBe('https://api.pinterest.com/v5');
       expect(getPinterestApiBaseUrl('production')).toBe('https://api.pinterest.com/v5');
       expect(getPinterestApiBaseUrl('unknown')).toBe('https://api.pinterest.com/v5');
+    });
+  });
+
+  describe('generateMultiPinHooks', () => {
+    it('deve gerar 4 variações de Pins com ganchos psicológicos distintos e compliance FTC', () => {
+      const hooks = generateMultiPinHooks({
+        title: 'The 5 Best Orthopedic Dog Beds of 2026: Joint Relief for Senior Dogs',
+        description: 'Looking for the best orthopedic memory foam dog bed to ease arthritis and hip dysplasia? We tested top waterproof beds.',
+        slug: 'best-orthopedic-dog-beds',
+        heroImage: 'https://images.unsplash.com/photo-bed.jpg',
+        category: 'Pet Care',
+        boardId: '818177525994526460',
+        siteUrl: 'https://uadson.github.io/paw-and-home',
+      });
+
+      expect(hooks).toHaveLength(4);
+
+      // Todos devem ser válidos em conformidade com o validador de compliance
+      hooks.forEach((hook) => {
+        const compliance = validatePinCompliance({
+          title: hook.title,
+          description: hook.description,
+          link: hook.link,
+        });
+        expect(compliance.valid).toBe(true);
+        expect(hook.description).toContain('#ad');
+        expect(hook.description).toContain('#affiliate');
+        expect(hook.board_id).toBe('818177525994526460');
+      });
+
+      // Validação de UTM contents exclusivos
+      const utmContents = hooks.map((h) => new URL(h.link).searchParams.get('utm_content'));
+      expect(utmContents).toContain('hook_pain');
+      expect(utmContents).toContain('hook_value');
+      expect(utmContents).toContain('hook_durability');
+      expect(utmContents).toContain('hook_comparison');
+
+      // Títulos devem ser diferentes entre si
+      const uniqueTitles = new Set(hooks.map((h) => h.title));
+      expect(uniqueTitles.size).toBe(4);
     });
   });
 });

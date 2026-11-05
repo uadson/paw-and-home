@@ -102,7 +102,8 @@ async function main() {
   const apiBaseUrl = process.env.PINTEREST_API_BASE_URL ||
     (envMode.toLowerCase() === 'sandbox' ? 'https://api-sandbox.pinterest.com/v5' : 'https://api.pinterest.com/v5');
 
-  console.log(`🌍 Ambiente API: ${envMode.toUpperCase()} (${apiBaseUrl})`);
+  const isMultiPin = process.argv.includes('--multi-pin');
+  console.log(`🌍 Ambiente API: ${envMode.toUpperCase()} (${apiBaseUrl}) | Multi-Pin: ${isMultiPin ? 'ATIVO (4 ganchos/artigo)' : 'DESATIVADO (1 pin/artigo)'}`);
 
   let successCount = 0;
 
@@ -118,7 +119,7 @@ async function main() {
       description = `${article.description.slice(0, -(overflow + 3))}... Check out our top-ranked recommendations and buying guide. #ad #affiliate #${categoryTag}`;
     }
 
-    const pinPayload = {
+    const defaultPayload = {
       board_id: boardId,
       title: cleanTitle,
       description,
@@ -129,48 +130,79 @@ async function main() {
       },
     };
 
-    const validation = validatePin(pinPayload);
-    if (!validation.valid) {
-      console.error(`❌ Falha de validação no Pin para "${article.slug}":`, validation.errors);
-      continue;
-    }
-
-    console.log(`\n🚀 Preparando Pin: "${pinPayload.title}"`);
-    console.log(`   🔗 Destino (Bridge): ${pinPayload.link}`);
-    console.log(`   🖼️  Imagem: ${pinPayload.media_source.url}`);
-
-    if (isDryRun) {
-      console.log('   🧪 [DRY-RUN] Simulação de publicação concluída com sucesso (sem envio à API).');
-      article.pinterestPinned = true;
-      article.pinterestPinnedAt = new Date().toISOString();
-      successCount++;
-    } else {
-      try {
-        const res = await fetch(`${apiBaseUrl}/pins`, {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            'Content-Type': 'application/json',
+    const payloads = isMultiPin
+      ? [
+          {
+            title: `Need Fast Relief for Your Dog? Top ${article.category || 'Pet Care'} Ranked`,
+            description: `${article.description} Stop letting discomfort ruin your daily routine. We tested top options that bring real relief. See the full review! #ad #affiliate #${categoryTag}`,
+            link: `${rawLink}?utm_source=pinterest&utm_medium=pin&utm_campaign=${article.slug}&utm_content=hook_pain`,
           },
-          body: JSON.stringify(pinPayload),
-        });
+          {
+            title: `Best Bang for Your Buck: Top ${article.category || 'Pet Care'} of 2026`,
+            description: `Don't overpay for overpriced brands. We tested affordable options that deliver premium quality on Amazon. #ad #affiliate #${categoryTag}`,
+            link: `${rawLink}?utm_source=pinterest&utm_medium=pin&utm_campaign=${article.slug}&utm_content=hook_value`,
+          },
+          {
+            title: `Built to Last: Durable & Easy-Clean ${article.category || 'Pet Care'} Reviewed`,
+            description: `Tired of buying replacements every 6 months? We ranked the toughest, machine-washable options on Amazon. #ad #affiliate #${categoryTag}`,
+            link: `${rawLink}?utm_source=pinterest&utm_medium=pin&utm_campaign=${article.slug}&utm_content=hook_durability`,
+          },
+          {
+            title: `Tested & Rated: Which ${article.category || 'Pet Care'} is Actually Worth It?`,
+            description: `We compared the top 5 contenders side-by-side to find the ultimate winner. See the specs, pros & cons before you buy! #ad #affiliate #${categoryTag}`,
+            link: `${rawLink}?utm_source=pinterest&utm_medium=pin&utm_campaign=${article.slug}&utm_content=hook_comparison`,
+          },
+        ].map((h) => ({
+          board_id: boardId,
+          title: h.title.length > 100 ? `${h.title.slice(0, 97)}...` : h.title,
+          description: h.description.length > 500 ? `${h.description.slice(0, 497)}...` : h.description,
+          link: h.link,
+          media_source: { source_type: 'image_url', url: article.heroImage },
+        }))
+      : [defaultPayload];
 
-        if (!res.ok) {
-          const body = await res.text();
-          console.error(`❌ Erro Pinterest API (${res.status}): ${body}`);
-          continue;
-        }
+    for (const pinPayload of payloads) {
+      const validation = validatePin(pinPayload);
+      if (!validation.valid) {
+        console.error(`❌ Falha de validação no Pin para "${article.slug}":`, validation.errors);
+        continue;
+      }
 
-        const data = await res.json();
-        console.log(`   ✅ Pin criado com sucesso! ID: ${data.id}`);
-        article.pinterestPinned = true;
-        article.pinterestPinId = data.id;
-        article.pinterestPinnedAt = new Date().toISOString();
+      console.log(`\n🚀 Preparando Pin: "${pinPayload.title}"`);
+      console.log(`   🔗 Destino (Bridge): ${pinPayload.link}`);
+      console.log(`   🖼️  Imagem: ${pinPayload.media_source.url}`);
+
+      if (isDryRun) {
+        console.log('   🧪 [DRY-RUN] Simulação de publicação concluída com sucesso (sem envio à API).');
         successCount++;
-      } catch (err) {
-        console.error(`❌ Falha de rede na requisição ao Pinterest:`, err);
+      } else {
+        try {
+          const res = await fetch(`${apiBaseUrl}/pins`, {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(pinPayload),
+          });
+
+          if (!res.ok) {
+            const body = await res.text();
+            console.error(`❌ Erro Pinterest API (${res.status}): ${body}`);
+            continue;
+          }
+
+          const data = await res.json();
+          console.log(`   ✅ Pin criado com sucesso! ID: ${data.id}`);
+          successCount++;
+        } catch (err) {
+          console.error(`❌ Falha de rede na requisição ao Pinterest:`, err);
+        }
       }
     }
+
+    article.pinterestPinned = true;
+    article.pinterestPinnedAt = new Date().toISOString();
   }
 
   fs.writeFileSync(queuePath, JSON.stringify(queue, null, 2), 'utf-8');

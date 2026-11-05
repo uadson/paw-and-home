@@ -93,6 +93,52 @@ export function buildAmazonUrl(
 }
 
 /**
+ * Constrói a URL oficial de adição direta ao carrinho da Amazon (Add to Cart).
+ *
+ * Ao adicionar o item diretamente ao carrinho de compras do visitante,
+ * a janela de atribuição de comissão do Amazon Associates é estendida
+ * de 24 horas para até 90 dias (ou até a conclusão do pedido).
+ *
+ * Args:
+ *   asinOrUrl: Código ASIN ou URL completa do produto na Amazon.
+ *   tagOrOptions: Tag de afiliado personalizada ou objeto de opções (tag, subTag).
+ *   subTagParam: Sub-tag opcional para rastreamento de campanha.
+ *
+ * Returns:
+ *   URL canônica de Add to Cart com quantidade 1 e tag de associado.
+ */
+export function buildAmazonAddToCartUrl(
+  asinOrUrl: string,
+  tagOrOptions: string | AffiliateUrlOptions = DEFAULT_AMAZON_TAG,
+  subTagParam?: string,
+): string {
+  const asin = extractAsin(asinOrUrl);
+
+  if (!asin) {
+    return asinOrUrl;
+  }
+
+  let tag = DEFAULT_AMAZON_TAG;
+  let subTag: string | undefined = subTagParam;
+
+  if (typeof tagOrOptions === 'string') {
+    tag = tagOrOptions || DEFAULT_AMAZON_TAG;
+  } else if (tagOrOptions && typeof tagOrOptions === 'object') {
+    tag = tagOrOptions.tag || DEFAULT_AMAZON_TAG;
+    if (tagOrOptions.subTag) {
+      subTag = tagOrOptions.subTag;
+    }
+  }
+
+  let url = `https://www.amazon.com/gp/aws/cart/add.html?ASIN.1=${asin}&Quantity.1=1&AssociateTag=${encodeURIComponent(tag)}`;
+  if (subTag) {
+    url += `&ascsubtag=${encodeURIComponent(subTag)}`;
+  }
+
+  return url;
+}
+
+/**
  * Retorna os atributos 'rel' recomendados para links de afiliados.
  *
  * Cumpre as diretrizes do Google Search Central para links patrocinados
