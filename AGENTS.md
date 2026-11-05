@@ -17,6 +17,7 @@ Você atua como Arquiteto de Software Sênior e Especialista em Integrações, S
    - Aplique marcação Schema.org estruturada (`Product`, `Review`, `BreadcrumbList`, `FAQPage`) em conformidade com as diretrizes do Google Search Central.
 
 3. **Automação de Entrega de Anúncios e Integrações Externas (Pinterest API):**
+   - **Credenciais e Quickstart:** Pinterest App ID configurado como `1623625`, seguindo o padrão oficial da biblioteca `pinterest/api-quickstart` via `scripts/pinterest-oauth.mjs`.
    - **Formato dos Anúncios:** Todos os anúncios e criativos de Pins devem ser produzidos em **inglês americano nativo** (`en-US`), com títulos de alto impacto, chamadas transacionais e apelo visual direto ao consumidor dos EUA.
    - **Compliance de Afiliação (Amazon Associates & FTC):**
      - Nunca configure anúncios pagos com redirecionamento direto para a URL da Amazon. O anúncio deve sempre conduzir o visitante à página do artigo correspondente no site (`paw-and-home`).

@@ -9,6 +9,8 @@ node_modules/
 .env
 .env.production
 .env.local
+.pinterest-token.json
+oauth_tokens/
 
 # Logs
 npm-debug.log*

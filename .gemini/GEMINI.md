@@ -33,10 +33,13 @@ Este repositório contém o código-fonte de um site estático de curadoria de p
 
 ## Integração com a API do Pinterest (Ad Delivery & Pin Automation)
 
-### 1. Parâmetros e Limites da API (Tier Trial)
+### 1. Parâmetros e Credenciais da API (Tier Trial)
+- **Pinterest App ID:** `1623625`
+- **Referência Oficial:** [`pinterest/api-quickstart`](https://github.com/pinterest/api-quickstart)
 - **Cota Diária:** 1.000 requisições a cada 24 horas (janela móvel).
 - **Consumo Estimado:** Publicar de 10 a 25 Pins orgânicos diários consome entre 10 e 50 requisições/dia (< 5% da cota).
 - **Rate Limiting:** Implementado na classe `PinterestRateLimiter` (`src/utils/pinterest.ts`), controlando requisições e emitindo alertas caso o consumo atinja 90% da cota diária.
+- **Autenticação OAuth 2.0:** Script `scripts/pinterest-oauth.mjs` que inicia servidor local em `http://localhost:8085/`, executa a troca de código por Access Token e Refresh Token, e os salva em `.pinterest-token.json`.
 - **Automação via CI/CD:** Script `scripts/pinterest-publish.mjs` conectado ao workflow `.github/workflows/auto-publish.yml` para publicação contínua de novos artigos.
 
 ### 2. Estratégia de Entrega de Conteúdo e Anúncios

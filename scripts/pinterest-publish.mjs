@@ -13,6 +13,24 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
+// Carrega variáveis do arquivo .env
+if (process.loadEnvFile && fs.existsSync(path.resolve(process.cwd(), '.env'))) {
+  process.loadEnvFile();
+}
+
+// Carrega token persistido em .pinterest-token.json caso não esteja no ambiente
+const tokenFile = path.resolve(process.cwd(), '.pinterest-token.json');
+if (!process.env.PINTEREST_ACCESS_TOKEN && fs.existsSync(tokenFile)) {
+  try {
+    const saved = JSON.parse(fs.readFileSync(tokenFile, 'utf-8'));
+    if (saved.access_token) {
+      process.env.PINTEREST_ACCESS_TOKEN = saved.access_token;
+    }
+  } catch {
+    // ignora erro de leitura
+  }
+}
+
 const queuePath = path.resolve(process.cwd(), 'data/editorial-queue.json');
 const isDryRun = process.argv.includes('--dry-run') || !process.env.PINTEREST_ACCESS_TOKEN;
 
