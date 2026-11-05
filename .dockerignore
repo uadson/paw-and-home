@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.astro/
+.git/
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.env*
+.pinterest-token.json
+oauth_tokens/

@@ -1,6 +1,7 @@
 """Testes de segurança e controle de acesso HTTP Basic para proteção do painel."""
 
-import os
+import base64
+import secrets
 from fastapi.testclient import TestClient
 from app.main import app
 
@@ -15,18 +16,24 @@ def test_public_healthcheck_always_accessible() -> None:
 
 def test_dashboard_protected_when_password_set(monkeypatch) -> None:
     """Quando DASHBOARD_PASSWORD estiver configurada, exige autenticação HTTP Basic."""
-    monkeypatch.setenv("DASHBOARD_PASSWORD", "secret123")
-    monkeypatch.setenv("DASHBOARD_USERNAME", "admin")
+    # Gera credenciais efêmeras em tempo de execução sem valores literais sensíveis
+    user_key = f"usr_{secrets.token_hex(4)}"
+    pass_key = f"pwd_{secrets.token_hex(8)}"
 
-    # Acesso sem credenciais -> 401
+    monkeypatch.setenv("DASHBOARD_USERNAME", user_key)
+    monkeypatch.setenv("DASHBOARD_PASSWORD", pass_key)
+
+    # 1. Requisição sem credenciais -> 401 Unauthorized
     unauth_resp = client.get("/")
     assert unauth_resp.status_code == 401
     assert "WWW-Authenticate" in unauth_resp.headers
 
-    # Acesso com credenciais erradas -> 401
-    bad_auth_resp = client.get("/", auth=("admin", "wrongpassword"))
+    # 2. Requisição com credencial inválida -> 401 Unauthorized
+    invalid_b64 = base64.b64encode(f"{user_key}:mismatch".encode("utf-8")).decode("utf-8")
+    bad_auth_resp = client.get("/", headers={"Authorization": f"Basic {invalid_b64}"})
     assert bad_auth_resp.status_code == 401
 
-    # Acesso com credenciais corretas -> 200
-    good_auth_resp = client.get("/", auth=("admin", "secret123"))
+    # 3. Requisição com credencial legítima -> 200 OK
+    valid_b64 = base64.b64encode(f"{user_key}:{pass_key}".encode("utf-8")).decode("utf-8")
+    good_auth_resp = client.get("/", headers={"Authorization": f"Basic {valid_b64}"})
     assert good_auth_resp.status_code == 200

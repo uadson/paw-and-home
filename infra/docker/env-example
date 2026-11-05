@@ -1,13 +1,17 @@
 # Configurações do Painel de Monitoramento (FastAPI / Fly.io)
 PORT=8080
 PINTEREST_ENVIRONMENT=sandbox
-PINTEREST_APP_ID=1623625
+PINTEREST_APP_ID=your_pinterest_app_id
 PINTEREST_APP_SECRET=your_pinterest_app_secret
-PINTEREST_ACCESS_TOKEN=pina_your_sandbox_or_prod_token
-PINTEREST_BOARD_ID=818177525994526460
+PINTEREST_ACCESS_TOKEN=your_sandbox_or_prod_token
+PINTEREST_BOARD_ID=your_pinterest_board_id
+
+# Autenticação HTTP Basic do Dashboard
+DASHBOARD_USERNAME=your_admin_username
+DASHBOARD_PASSWORD=your_admin_password
 
 # Groq Cloud API (Inferência Llama 3.3 70B Gratuita)
-GROQ_API_KEY=gsk_your_free_groq_api_key_here
+GROQ_API_KEY=your_groq_api_key
 
-# GitHub Token (Opcional, para disparar deploys e automações via API)
-GITHUB_TOKEN=ghp_your_github_token_here
+# GitHub Token (Opcional, para automações via CI/CD)
+GITHUB_TOKEN=your_github_token

@@ -5,6 +5,7 @@ o conteúdo em inglês americano no schema JSON estrito de editorial-queue.json.
 """
 
 import json
+import os
 import re
 from typing import Any, Dict
 import httpx
@@ -112,8 +113,10 @@ class LlmArticleGenerator:
             "Content-Type": "application/json",
         }
 
+        selected_model = os.environ.get("GROQ_MODEL", "openai/gpt-oss-120b")
+
         body = {
-            "model": "llama-3.3-70b-versatile",
+            "model": selected_model,
             "messages": [
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_prompt},
