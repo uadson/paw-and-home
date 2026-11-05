@@ -41,28 +41,55 @@ export function extractAsin(input: string): string | null {
   return null;
 }
 
+export interface AffiliateUrlOptions {
+  tag?: string;
+  subTag?: string;
+  campaign?: string;
+}
+
 /**
  * Constrói uma URL canônica e limpa de afiliado da Amazon a partir de um ASIN ou URL.
  *
  * Remove tokens de rastreamento antigos, referrers e lixo de query strings,
- * garantindo a aplicação consistente da tag de associado correta.
+ * garantindo a aplicação consistente da tag de associado correta e suporte a sub-tracking (ascsubtag).
  *
  * Args:
  *   asinOrUrl: Código ASIN ou URL completa do produto na Amazon.
- *   tag: Tag de afiliado personalizada opcional (usa DEFAULT_AMAZON_TAG por padrão).
+ *   tagOrOptions: Tag de afiliado personalizada opcional ou objeto de opções (tag, subTag, campaign).
+ *   subTagParam: Sub-tag opcional para rastreamento (usado quando tagOrOptions é string).
  *
  * Returns:
  *   URL canônica de afiliado ou o link original caso o ASIN não possa ser extraído.
  */
-export function buildAmazonUrl(asinOrUrl: string, tag: string = DEFAULT_AMAZON_TAG): string {
+export function buildAmazonUrl(
+  asinOrUrl: string,
+  tagOrOptions: string | AffiliateUrlOptions = DEFAULT_AMAZON_TAG,
+  subTagParam?: string,
+): string {
   const asin = extractAsin(asinOrUrl);
 
   if (!asin) {
     return asinOrUrl;
   }
 
-  const activeTag = tag || DEFAULT_AMAZON_TAG;
-  return `https://www.amazon.com/dp/${asin}?tag=${encodeURIComponent(activeTag)}`;
+  let tag = DEFAULT_AMAZON_TAG;
+  let subTag: string | undefined = subTagParam;
+
+  if (typeof tagOrOptions === 'string') {
+    tag = tagOrOptions || DEFAULT_AMAZON_TAG;
+  } else if (tagOrOptions && typeof tagOrOptions === 'object') {
+    tag = tagOrOptions.tag || DEFAULT_AMAZON_TAG;
+    if (tagOrOptions.subTag) {
+      subTag = tagOrOptions.subTag;
+    }
+  }
+
+  let url = `https://www.amazon.com/dp/${asin}?tag=${encodeURIComponent(tag)}`;
+  if (subTag) {
+    url += `&ascsubtag=${encodeURIComponent(subTag)}`;
+  }
+
+  return url;
 }
 
 /**

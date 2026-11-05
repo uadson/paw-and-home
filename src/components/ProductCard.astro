@@ -106,6 +106,9 @@ const productSchema = showSchema ? buildProductSchema({
           href={amazonUrl} 
           target="_blank" 
           rel={relAttr}
+          data-track="amazon-outbound"
+          data-asin={asin}
+          data-product-name={name}
           class="block relative group w-full max-w-[280px] aspect-square rounded-xl overflow-hidden bg-slate-50 border border-slate-100 p-4 flex items-center justify-center hover:opacity-95 transition-opacity"
         >
           <img 
@@ -144,6 +147,9 @@ const productSchema = showSchema ? buildProductSchema({
               href={amazonUrl}
               target="_blank"
               rel={relAttr}
+              data-track="amazon-outbound"
+              data-asin={asin}
+              data-product-name={name}
               class="hover:text-amber-600 transition-colors"
             >
               {name}
@@ -227,6 +233,9 @@ const productSchema = showSchema ? buildProductSchema({
             href={amazonUrl}
             target="_blank"
             rel={relAttr}
+            data-track="amazon-outbound"
+            data-asin={asin}
+            data-product-name={name}
             class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-bold text-sm rounded-xl shadow-sm hover:shadow-md transition-all active:scale-98"
           >
             <span>{ctaText}</span>

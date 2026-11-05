@@ -69,3 +69,10 @@ jobs:
 
       - name: Notify Search Engines via IndexNow
         run: node scripts/notify-indexnow.mjs
+
+      - name: Publish Pins to Pinterest
+        run: node scripts/pinterest-publish.mjs
+        env:
+          PINTEREST_ACCESS_TOKEN: ${{ secrets.PINTEREST_ACCESS_TOKEN }}
+          PINTEREST_BOARD_ID: ${{ secrets.PINTEREST_BOARD_ID }}
+          SITE_URL: https://uadson.github.io/paw-and-home

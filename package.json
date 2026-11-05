@@ -1,6 +1,6 @@
 {
   "name": "paw-and-home",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "High-performance, SEO-optimized Amazon Affiliate Niche Site for the US market",
   "type": "module",
   "scripts": {
@@ -12,7 +12,8 @@
     "test": "vitest run",
     "new:article": "node scripts/new-article.mjs",
     "publish:next": "node scripts/publish-next.mjs",
-    "indexnow": "node scripts/notify-indexnow.mjs"
+    "indexnow": "node scripts/notify-indexnow.mjs",
+    "publish:pinterest": "node scripts/pinterest-publish.mjs"
   },
   "repository": {
     "type": "git",

@@ -4,6 +4,8 @@
  *
  * Inclui OpenGraph, Twitter Cards, Canonical URL e suporte a JSON-LD schemas.
  */
+import { buildPinterestTagSnippet } from '../utils/tracking';
+
 interface Props {
   title: string;
   description: string;
@@ -11,6 +13,7 @@ interface Props {
   ogImage?: string;
   ogType?: 'website' | 'article';
   schema?: Record<string, unknown> | Record<string, unknown>[];
+  pinterestTagId?: string;
 }
 
 const {
@@ -20,10 +23,12 @@ const {
   ogImage = '/images/og-default.jpg',
   ogType = 'website',
   schema,
+  pinterestTagId = (typeof process !== 'undefined' && process.env?.PUBLIC_PINTEREST_TAG_ID) || '2612345678901',
 } = Astro.props;
 
 const siteTitle = title.includes('|') ? title : `${title} | Paw & Home Guides`;
 const resolvedOgImage = new URL(ogImage, Astro.site || Astro.url.origin).href;
+const pinterestSnippet = buildPinterestTagSnippet(pinterestTagId);
 ---
 
 <!-- Metatags Essenciais -->
@@ -55,6 +60,11 @@ const resolvedOgImage = new URL(ogImage, Astro.site || Astro.url.origin).href;
 
 <!-- Favicon -->
 <link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL.replace(/\/$/, '')}/favicon.svg`} />
+
+<!-- Pinterest Tag Telemetria -->
+{pinterestSnippet && (
+  <script is:inline set:html={pinterestSnippet} />
+)}
 
 <!-- Dados Estruturados Schema.org (JSON-LD) -->
 {schema && (

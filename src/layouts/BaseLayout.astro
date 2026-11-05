@@ -47,5 +47,28 @@ const {
       <slot />
     </main>
     <Footer />
+
+    <!-- Script de Telemetria de Conversão de Afiliados (Pinterest Tag & Outbound Tracking) -->
+    <script is:inline>
+      document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('a[href*="amazon.com"]').forEach((link) => {
+          link.addEventListener('click', (event) => {
+            const anchor = event.currentTarget;
+            const asin = anchor.dataset.asin || '';
+            const productName = anchor.dataset.productName || anchor.innerText.trim();
+
+            if (typeof window !== 'undefined' && typeof window.pintrk === 'function') {
+              window.pintrk('track', 'lead', {
+                lead_type: 'Amazon Outbound Click',
+                asin: asin,
+                product_name: productName,
+                currency: 'USD',
+                value: 0
+              });
+            }
+          });
+        });
+      });
+    </script>
   </body>
 </html>

@@ -53,6 +53,9 @@ const relAttr = getAffiliateRel();
         href={amazonUrl}
         target="_blank"
         rel={relAttr}
+        data-track="amazon-outbound"
+        data-asin={asin}
+        data-product-name={productName}
         class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 active:scale-95 text-slate-950 font-bold text-xs shadow-sm"
       >
         <span>{ctaText}</span>

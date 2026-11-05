@@ -65,6 +65,9 @@ const relAttr = getAffiliateRel();
                   href={url} 
                   target="_blank" 
                   rel={relAttr}
+                  data-track="amazon-outbound"
+                  data-asin={item.asin}
+                  data-product-name={item.name}
                   class="flex items-center gap-3 font-semibold text-slate-900 hover:text-amber-600 transition-colors"
                 >
                   <img 
@@ -97,6 +100,9 @@ const relAttr = getAffiliateRel();
                   href={url}
                   target="_blank"
                   rel={relAttr}
+                  data-track="amazon-outbound"
+                  data-asin={item.asin}
+                  data-product-name={item.name}
                   class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs shadow-2xs hover:shadow-xs transition-all"
                 >
                   <span>Check Price</span>

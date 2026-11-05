@@ -8,10 +8,12 @@ Você atua como Arquiteto de Software Sênior e Especialista em Integrações, S
 
 1. **Geração de Componentes e UI de Conversão:**
    - Crie componentes reutilizáveis que maximizem o CTR em links afiliados (títulos atrativos, imagem de alta fidelidade, prós/contras, especificações e botões de chamada para ação destacados).
+   - Todos os botões e links de saída para a Amazon devem conter os atributos `data-track="amazon-outbound"`, `data-asin` e `data-product-name` para rastreamento de telemetria via Pinterest Tag.
    - Mantenha a interface 100% responsiva (Mobile-First) e garanta que componentes flutuantes ou de sticky bar respeitem as diretrizes de usabilidade.
 
-2. **SEO On-Page e Rich Pins:**
+2. **SEO On-Page, Rich Pins e Feed RSS:**
    - Garanta que cada página gerada contenha metatags completas (`title`, `description` com gatilhos de CTR no Google US), estrutura semântica limpa (H1, H2, H3), tags OpenGraph e Twitter Cards formatadas para rich snippets e Rich Pins no Pinterest.
+   - Mantenha o endpoint de feed RSS do Pinterest (`src/pages/pinterest-feed.xml.ts`) sincronizado com todos os artigos da coleção.
    - Aplique marcação Schema.org estruturada (`Product`, `Review`, `BreadcrumbList`, `FAQPage`) em conformidade com as diretrizes do Google Search Central.
 
 3. **Automação de Entrega de Anúncios e Integrações Externas (Pinterest API):**
@@ -21,11 +23,11 @@ Você atua como Arquiteto de Software Sênior e Especialista em Integrações, S
      - Os anúncios e postagens externas devem incluir a sinalização regulatória exigida pela FTC (`#ad`, `#affiliate` ou menção clara de parceria).
      - Não prometa preços estáticos ou descontos fixos sem validação em tempo real via Amazon PA-API.
    - **Limites de API (Pinterest Trial):**
-     - O script de automação deve respeitar rigorosamente o limite de 1.000 requisições diárias. Mantenha controle de rate limit, renovação de tokens via OAuth 2.0 (Refresh Token) e evite chamadas redundantes.
-   - **Telemetria de Conversão:**
+     - O script de automação (`scripts/pinterest-publish.mjs`) e utilitários (`src/utils/pinterest.ts`) devem respeitar rigorosamente o limite de 1.000 requisições diárias via `PinterestRateLimiter`.
+   - **Telemetria de Conversão e Atribuição:**
      - Mantenha a instrumentação de eventos via Pinterest Tag (`pintrk`) e rastreamento com parâmetros UTM e sub-tags da Amazon (`ascsubtag`).
 
 4. **Boas Práticas de Performance e Qualidade:**
    - Otimize o carregamento de imagens e minimize o bloqueio de renderização por scripts terceiros para manter pontuação verde (90+) no Google Lighthouse.
-   - Garanta que testes unitários com Vitest cubram novas utilidades e componentes críticos na pasta `__tests__/`.
+   - Garanta que testes unitários com Vitest cubram novas utilidades e componentes críticos na pasta `__tests__/` antes de qualquer entrega de código (TDD).
    - Mantenha docstrings no padrão Google Style e responda sempre em **Português do Brasil (PT-BR)** nas interações e relatórios técnicos.

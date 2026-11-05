@@ -56,6 +56,18 @@ describe('affiliate utils (utilitários de afiliado)', () => {
       const result = buildAmazonUrl(fallbackUrl);
       expect(result).toBe(fallbackUrl);
     });
+
+    it('deve incluir o parâmetro ascsubtag quando fornecido como string', () => {
+      const asin = 'B0056ASTDU';
+      const result = buildAmazonUrl(asin, 'custom-tag-20', 'pin_dog_bed');
+      expect(result).toBe('https://www.amazon.com/dp/B0056ASTDU?tag=custom-tag-20&ascsubtag=pin_dog_bed');
+    });
+
+    it('deve suportar objeto de opções com tag e subTag', () => {
+      const asin = 'B0056ASTDU';
+      const result = buildAmazonUrl(asin, { tag: 'pawandhome-20', subTag: 'ad_campaign_spring' });
+      expect(result).toBe('https://www.amazon.com/dp/B0056ASTDU?tag=pawandhome-20&ascsubtag=ad_campaign_spring');
+    });
   });
 
   describe('getAffiliateRel', () => {
